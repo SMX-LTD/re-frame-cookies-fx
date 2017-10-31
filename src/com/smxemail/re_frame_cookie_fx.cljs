@@ -151,9 +151,7 @@
 ;; subpath and/or another domain these will still be there.
 (reg-fx
   :cookie/clear
-  (fn [{:keys [on-success on-failure]}]
-    (try
-      (.clear goog.net.cookies)
-      (dispatch on-success)
-      (catch :default e
-        (dispatch (conj on-failure e))))))
+  (fn [& [{:keys [on-success]}]]
+    (.clear goog.net.cookies)
+    (when on-success
+      (dispatch on-success))))
